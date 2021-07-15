@@ -1,7 +1,7 @@
 import React, { useEffect,useContext } from 'react'
 import Login from './pages/Login/login'
 import Signup from './pages/signup/signup'
-import Messanger from './pages/Messanger/messanger'
+import Messanger from './pages/Messanger/messanger.jsx'
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,7 +17,6 @@ function App() {
   useEffect(() => {
     authenticatedUSer(dispatch)
   },[dispatch])
-console.log(user);
   return (
     <Router>
       <Switch>

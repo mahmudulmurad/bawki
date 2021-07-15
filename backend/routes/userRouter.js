@@ -54,10 +54,10 @@ router.post("/login", async (req, res) => {
 //me
 router.get('/me', auth, async (req, res) => {
     let user =await User.findOne({_id:req.user._id},{
-        friends:0,
         updatedAt:0,
         createdAt:0
-    }).exec()
+    }).populate("friends","username email")
+    .exec()
     res.send(user)
 })
 
@@ -85,7 +85,15 @@ router.put("/:id/friend", auth, async (req, res) => {
         res.status(403).json("you cant follow yourself")
     }
 })
-
+//get a user 
+router.get('/:id',auth,async(req,res)=>{
+    try {
+        const user = await User.findById(req.params.id).exec()
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+})
 //get friends
 router.get("/friends", auth, async (req, res) => {
     try {

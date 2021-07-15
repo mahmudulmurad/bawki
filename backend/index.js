@@ -1,10 +1,12 @@
-const express = require('express');
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+const express = require('express')
+const mongoose = require("mongoose")
+const dotenv = require("dotenv")
 const cors = require("cors")
 const app = express()
 dotenv.config();
-const userRouter = require('./routes/userRouter');
+const userRouter = require('./routes/userRouter')
+const conversationRouter = require('./routes/conversationRouter')
+const messageRouter = require('./routes/messageRouter')
 
 
 mongoose.connect(process.env.MONGO_URL, {
@@ -17,6 +19,8 @@ mongoose.connect(process.env.MONGO_URL, {
 app.use(express.json());
 app.use(cors())
 app.use(userRouter)
+app.use(conversationRouter)
+app.use(messageRouter)
 
 app.listen(process.env.PORT, ()=>{
     console.log('Express server is running on port : '+ process.env.PORT)
