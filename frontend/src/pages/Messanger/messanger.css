@@ -5,6 +5,14 @@
 .chatmenu{
     flex: 3.5;
 }
+.chatmenuwrapper{
+    height: 100%;
+    overflow: auto;
+}
+.allfriends{
+    height: 100%;
+    overflow: auto;
+}
 .chatbox{
     flex: 5.5;
 }
@@ -47,7 +55,6 @@
 .chatonline{
     flex: 3;
 }
-.chatmenuwrapper,
 .chatboxwrapper,
 .chatonlinewrapper{
     padding: 10px;

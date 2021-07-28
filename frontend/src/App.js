@@ -21,11 +21,11 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-          {user ? <Messanger /> : <Signup />}
+          {user ? <Messanger /> : <Login /> }
         </Route>
 
-        <Route path="/login">
-          {user ? <Redirect to="/" /> : <Login />}
+        <Route path="/register">
+          {user ? <Redirect to="/" /> : <Signup />}
         </Route>
       </Switch>
     </Router>

@@ -24,7 +24,7 @@ export default function Signup() {
             };
             try {
                 await axios.post("http://localhost:3030/register", user);
-                history.push("/login");
+                history.push("/");
             } catch (err) {
                 console.log(err);
             }
@@ -73,7 +73,7 @@ export default function Signup() {
                             Sign Up
                         </button>
                         <button className="loginRegisterButton">
-                            <Link to="/login" style={{ textDecoration: "none", color: "white" }}>Log into Account</Link>
+                            <Link to="/" style={{ textDecoration: "none", color: "white" }}>Log into Account</Link>
                         </button>
 
                     </form>

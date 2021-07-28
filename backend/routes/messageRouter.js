@@ -10,12 +10,13 @@ router.post('/message', auth, async (req, res) => {
             "sender": req.user._id,
             "text": req.body.text
         }
+        console.log(data)
         const newMessage = await new Message(data)
         await newMessage.save()
         res.status(201).json(newMessage)
 
     } catch (error) {
-        res.statusCode(500).json(error.message)
+        res.status(500).json(error.message)
     }
 })
 
