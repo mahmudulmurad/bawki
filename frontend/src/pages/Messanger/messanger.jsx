@@ -19,7 +19,7 @@ function Messanger() {
     const scrollRef = useRef()
     const socket = useRef()
     const [arraivalmessage , setarraivalmessage]=useState(null)
-    //const [onlineusers,setOnlineUsers] = useState([])
+    const [onlineusers,setOnlineUsers] = useState([])
 
 
     useEffect(() => {
@@ -33,6 +33,7 @@ function Messanger() {
         })
     }, [])
 
+
     useEffect(()=>{
         arraivalmessage && 
         currentchat?.members.includes(arraivalmessage.sender) &&
@@ -41,12 +42,11 @@ function Messanger() {
 
     useEffect(() => {
         socket.current.emit("addUser", user._id)
-        // socket.current.on("getUsers", users => {
-        // console.log(users)
-        // })
+        socket.current.on("getUsers", users => {
+            setOnlineUsers(user.friends.filter((f) => users.some((u) => u.userId === f._id)))
+        })
     }, [user])
 
-    
 useEffect(() => {
         const getConversations = async () => {
             try {
@@ -93,8 +93,7 @@ useEffect(() => {
                             "Content-type": "application/json;charset=UTF-8",
                             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                         }
-                    });
-                console.log(res.data)
+                    })
                 setMessages(res.data)
             } catch (err) {
                 console.log(err)
@@ -147,7 +146,12 @@ useEffect(() => {
                         <span>All conversations : </span>
                         {conversations.map((one, index) => (
                             <div onClick={() => setCurrentchat(one)}>
-                                <Conversation key={index} one={one} user={user} />
+                                <Conversation 
+                                    key={index} 
+                                    one={one} 
+                                    user={user} 
+                                    onlineusers={onlineusers}
+                                />
                             </div>
                         ))}
                     </div>
@@ -183,12 +187,11 @@ useEffect(() => {
                 <div className='allfriends'>
                     <span>Not Connect: </span>
                     {allUsers.map((one, index) => (
-                            <div >
+                            <div>
                                 <Allusers 
                                 key={index} 
                                 one={one} 
-                                user={user} 
-                                setconversations={setconversations}
+                                user={user}
                                 />
                             </div>
                         ))}

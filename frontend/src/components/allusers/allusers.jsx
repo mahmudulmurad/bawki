@@ -29,7 +29,7 @@ const Allusers = ({one}) => {
             alt="" 
             className="userimage" />
             <span className="textspan">{one.username}</span>
-            <div>
+            <div className="addbutton">
                 <Add onClick={addFriends}/>
             </div>
         </div>

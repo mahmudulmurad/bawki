@@ -19,3 +19,7 @@
 .textspan{
     font-weight: 700;
 }
+.addbutton{
+    margin-left: auto;
+    cursor: pointer;
+}
