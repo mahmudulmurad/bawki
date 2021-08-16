@@ -1,0 +1,28 @@
+.minimize{
+    width: 120px;
+    height: 9px;
+    background-color: #1877f2;
+    padding: 10px;
+    text-align: center;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+/* .username{
+    flex:8;
+    height: 25px;
+    margin: 0 !important;
+}
+.closeicon{
+    flex: 4;
+    height: 25px;
+    margin: 0 !important;
+
+} */
+.closeicon:hover{
+    color:red;
+}
+
+

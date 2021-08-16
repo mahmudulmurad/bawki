@@ -1,6 +1,8 @@
 .messanger{
-    height: calc(100vh - 70px);
+    height: calc(100vh - 87px);
     display: flex;
+    width: 100%;
+    
 }
 .chatmenu{
     flex: 3.5;
@@ -58,5 +60,71 @@
 .chatboxwrapper,
 .chatonlinewrapper{
     padding: 10px;
+    height: 96%;
+}
+.chatbar{
+    height: 30px;
+    width: 100%;
+    position: absolute;
+    background-color: transparent;
+    bottom: 1%;
+    display: flex;
+    justify-content: space-between;
+}
+.singleChat{
+    /* width: 75%; */
+    flex: 9;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+}
+.extra{
+    flex: 3;
+    display: flex;
+    color: black;
+}
+.extrachild{
+    width: 92px;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    background-color: gray;
+    margin-right: 3px;
+}
+.extrachild:hover{
+    background-color: white;
+}
+.box{
+    width: 250px;
+    height: 380px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid black;
+    position: absolute;
+    top: -405px;
+    right: 5%;
+}
+.boxheader{
+    background-color: #1877f2;
+    flex: 1;
+    padding: 5px;
+    color: white;
+    cursor: pointer;
+}
+.boxbody{
+    flex: 8;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    padding: 5px;
     height: 100%;
+}
+
+.boxfooter{
+    flex: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
