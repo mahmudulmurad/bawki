@@ -88,11 +88,11 @@
     text-align: center;
     cursor: pointer;
     padding: 5px;
-    background-color: gray;
+    background-color: white;
     margin-right: 3px;
 }
 .extrachild:hover{
-    background-color: white;
+    background-color:  gray;
 }
 .box{
     width: 250px;

@@ -100,7 +100,6 @@ function Messanger() {
                             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                         }
                     })
-                    console.log(res.data);
                 setMessages(res.data)
             } catch (err) {
                 console.log(err)
@@ -158,7 +157,11 @@ function Messanger() {
      }
      
     const handleRemoveItem = data => {
-        setChatbar(()=>chatbar.filter(item => !item?.members?.includes(data)))
+
+        setChatbar( ()=> chatbar.filter( item => !item?.members?.includes(data) ))
+        if( friend._id === data ) {
+            setPopup( !popup )
+        }
     }
 
     const noEffect = () =>{
@@ -176,6 +179,7 @@ function Messanger() {
     const chatSetter = data =>{
         setCurrentchat(data)
         getfriend(data)
+        setPopup(true)
     }
     const  getfriend = async (data) => {
         const friendID = data?.members?.find(m => m !== user._id)
@@ -239,7 +243,8 @@ function Messanger() {
                 <div className="singleChat">
                     { chatbar ?
                     chatbar.map((one, index) => (
-                        <div onClick={() =>chatSetter(one)} >
+                        /* <div onClick={() =>chatSetter(one)} > */
+                        <div>
                             <ChatBox
                                 i={index}
                                 one={one}
@@ -247,6 +252,7 @@ function Messanger() {
                                 // onlineusers={onlineusers}
                                 currentchat={currentchat}
                                 handleRemoveItem={handleRemoveItem}
+                                chatSetter={chatSetter}
                             />
                         </div>
                     ))
