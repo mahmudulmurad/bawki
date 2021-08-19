@@ -128,3 +128,29 @@
     justify-content: space-between;
     align-items: center;
 }
+.hidden{
+    display: none;
+}
+.chatNumber{
+    padding: 0 10px;
+    cursor: pointer;
+    height: 100%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chatListContainer{
+    width: auto;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    position: absolute;
+    top: -202px;
+    right: 25%;
+    overflow-y: scroll;
+}
+.fileIcon:hover{
+    cursor: pointer;
+}

@@ -8,8 +8,10 @@ import { useContext, useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { io } from 'socket.io-client'
 import Allusers from '../../components/allusers/allusers'
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 function Messanger() {
+
     const { user } = useContext(AuthContext)
     const [conversations, setconversations] = useState([])
     const [allUsers, setAllusers] = useState([])
@@ -24,6 +26,9 @@ function Messanger() {
     const clickRef = useRef()
     const [popup, setPopup] = useState(false)
     const [friend, setFriend] = useState({})
+    let [chatNumber , setChatNumber] = useState(0)
+    const [chatList , setChatList] = useState(false)
+    const [image, setImage] = useState(null)
 
 
 
@@ -110,6 +115,16 @@ function Messanger() {
 
     const sendMessage = async (e) => {
         e.preventDefault()
+
+    const formData = new FormData();
+      formData.append(
+        "myFile",
+       image,
+       image.name
+      );
+    console.log(image)
+    console.log(formData);
+
         let date = {
             "conversationId": currentchat?._id,
             "text": newMessage
@@ -146,10 +161,19 @@ function Messanger() {
     }, [messages])
 
     const PushToChatBar = (data) => {
+
         let test = chatbar.includes(data)
+
         if(!test){
             setChatbar([...chatbar, data])
+            if(chatbar.length >= 3){
+                setChatNumber(old => old + 1)
+            }
         }
+        console.log(chatbar.length)
+
+       
+
         getfriend(data)
         setPopup(true)
         setCurrentchat(data)
@@ -160,7 +184,14 @@ function Messanger() {
 
         setChatbar( ()=> chatbar.filter( item => !item?.members?.includes(data) ))
         if( friend._id === data ) {
-            setPopup( !popup )
+            setPopup( false )
+        }
+        if(chatbar.length >= 3){
+            setChatNumber(old => old - 1)
+        }
+        console.log(chatbar.length)
+        if(chatbar.length <=4){
+            setChatList(false)
         }
     }
 
@@ -180,6 +211,7 @@ function Messanger() {
         setCurrentchat(data)
         getfriend(data)
         setPopup(true)
+        setChatList(false)
     }
     const  getfriend = async (data) => {
         const friendID = data?.members?.find(m => m !== user._id)
@@ -199,6 +231,13 @@ function Messanger() {
     useEffect(() => {
         getfriend()
       }, [currentchat, user])
+
+
+const showhiddenChatmembers = (e) =>{
+    e.preventDefault()
+    setChatList(!chatList)
+    setPopup(false)
+}
 
     return (
         <>
@@ -242,20 +281,23 @@ function Messanger() {
             <div className="chatbar">
                 <div className="singleChat">
                     { chatbar ?
-                    chatbar.map((one, index) => (
+                    chatbar.map((one, index) => {
                         /* <div onClick={() =>chatSetter(one)} > */
-                        <div>
-                            <ChatBox
-                                i={index}
-                                one={one}
-                                user={user}
-                                // onlineusers={onlineusers}
-                                currentchat={currentchat}
-                                handleRemoveItem={handleRemoveItem}
-                                chatSetter={chatSetter}
-                            />
-                        </div>
-                    ))
+                        return index < 3 ?
+                            <div>
+                                <ChatBox
+                                    index={index}
+                                    one={one}
+                                    user={user}
+                                    // onlineusers={onlineusers}
+                                    currentchat={currentchat}
+                                    handleRemoveItem={handleRemoveItem}
+                                    chatSetter={chatSetter}
+                                />
+                            </div>
+                            :
+                            null
+                        })
                         : null
                     }
            {
@@ -283,11 +325,51 @@ function Messanger() {
                             onChange={(e) => setNewMessage(e.target.value)}
                             value={newMessage}
                         ></textarea>
+
+                        <label htmlFor="upload-button">
+                        <span className="fileIcon">
+                            <AttachFileIcon />
+                        </span>
+                        </label>
+
+                        <input type="file"
+                         id="upload-button"
+                         onChange={(e)=> setImage(e.target.files[0])} 
+                         style={{ display: "none" }}
+                         />
+
                         <button className="textsubmint" onClick={sendMessage}>Send</button>
+
                     </div> 
                 </div>
             </> : null  }
                 </div>
+
+                <div 
+                    className={`${chatNumber > 0 ? "chatNumber" :  "hidden"}`} 
+                    onClick={showhiddenChatmembers}
+                >
+                    {chatNumber}
+                </div>
+                {
+                    chatList ?
+                    <div className="chatListContainer">
+                        {chatbar.map((one, index) => {
+                            return index > 2 ?
+                            <ChatBox
+                                    index={index}
+                                    one={one}
+                                    user={user}
+                                    // onlineusers={onlineusers}
+                                    currentchat={currentchat}
+                                    handleRemoveItem={handleRemoveItem}
+                                    chatSetter={chatSetter}
+                                />
+                            : null
+                        })}
+                    </div>
+                    : null
+                }
                 <div className="extra">
                     <div className="extrachild alert">Alerts</div>
                     <div className="extrachild previouschat">Chats</div>

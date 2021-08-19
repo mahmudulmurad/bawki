@@ -1,13 +1,17 @@
 .minimize{
     width: 120px;
     height: 30px;
-    background-color:gray;
     text-align: center;
-    margin: 0 5px;
+    margin: 0 1px;
     cursor: pointer;
     font-size: 16px;
     display: flex;
     justify-content: space-between;
+    background-color: #D7D8DB;
+
+}
+.minimize:hover{
+    background-color: #fff;
 }
  .username{
     width: 80%;
@@ -18,6 +22,9 @@
 }
 
 .closeicon{
+   display: none;
+}
+.minimize:hover .closeicon{
     width: 20%;
     height:100%;
     display: flex;
