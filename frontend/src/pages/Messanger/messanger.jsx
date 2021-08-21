@@ -115,20 +115,36 @@ function Messanger() {
 
     const sendMessage = async (e) => {
         e.preventDefault()
+        let data
+        console.log(image);
+        if(image){
+            var formData = new FormData();
+            formData.append(
+              "myFile",
+             image,
+             image.name
+            )
+        }
+        if( image && newMessage ){
 
-    const formData = new FormData();
-      formData.append(
-        "myFile",
-       image,
-       image.name
-      );
-    console.log(image)
-    console.log(formData);
-
-        let date = {
+            data ={
+                "conversationId": currentchat?._id,
+                "text": newMessage,
+                "messageImage":formData
+           }
+       }
+       else if(!image && newMessage) {
+           data = {
             "conversationId": currentchat?._id,
             "text": newMessage
-        }
+           }
+       }
+       else if(image && !newMessage){
+           data ={
+               "conversationId": currentchat?._id,
+               "messageImage":formData
+           }
+       }
 
         const receiverId = currentchat.members.find(
             (member) => member !== user._id
@@ -141,7 +157,7 @@ function Messanger() {
         })
 
         try {
-            const res = await axios.post(`http://localhost:3030/message`, date,
+            const res = await axios.post(`http://localhost:3030/message`, data,
                 {
                     headers: {
                         "Content-type": "application/json;charset=UTF-8",

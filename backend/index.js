@@ -23,6 +23,7 @@ app.use(cors())
 app.use(userRouter)
 app.use(conversationRouter)
 app.use(messageRouter)
+app.use('/uploads', express.static('uploads'));
 
 let server = http.createServer(app)
 
