@@ -115,35 +115,21 @@ function Messanger() {
 
     const sendMessage = async (e) => {
         e.preventDefault()
-        let data
-        console.log(image);
-        if(image){
-            var formData = new FormData();
-            formData.append(
-              "myFile",
-             image,
-             image.name
-            )
+        var formData = new FormData();
+
+        if( image ){
+            formData.append('messageImage', image)
         }
         if( image && newMessage ){
-
-            data ={
-                "conversationId": currentchat?._id,
-                "text": newMessage,
-                "messageImage":formData
-           }
+        formData.append('text', newMessage)
+        formData.append('conversationId', currentchat?._id)
        }
        else if(!image && newMessage) {
-           data = {
-            "conversationId": currentchat?._id,
-            "text": newMessage
-           }
+        formData.append('text', newMessage)
+        formData.append('conversationId', currentchat?._id)
        }
        else if(image && !newMessage){
-           data ={
-               "conversationId": currentchat?._id,
-               "messageImage":formData
-           }
+        formData.append('conversationId', currentchat?._id)
        }
 
         const receiverId = currentchat.members.find(
@@ -157,15 +143,16 @@ function Messanger() {
         })
 
         try {
-            const res = await axios.post(`http://localhost:3030/message`, data,
+            const res = await axios.post(`http://localhost:3030/message`,formData,
                 {
                     headers: {
                         "Content-type": "application/json;charset=UTF-8",
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                     }
                 });
-            console.log(res)
+            console.log(res.data)
             setMessages([...messages, res.data])
+            setImage(null)
             setNewMessage("")
         } catch (err) {
             console.log(err);
@@ -349,6 +336,7 @@ const showhiddenChatmembers = (e) =>{
                         </label>
 
                         <input type="file"
+                         name="messageImage"
                          id="upload-button"
                          onChange={(e)=> setImage(e.target.files[0])} 
                          style={{ display: "none" }}

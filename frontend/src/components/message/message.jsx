@@ -4,10 +4,8 @@ import {format} from 'timeago.js'
 const Message = ({one,own}) => {
    
     if(one.messageImage){
-        var zz=`http://localhost:3030/${one?.messageImage}`;
+        var imageSrc=`http://localhost:3030/${one?.messageImage}`;
     }
-  
-    console.log(one);
     return (
         <div className={own ? "message own" : "message"}>
             <div className="messagetop">
@@ -22,7 +20,7 @@ const Message = ({one,own}) => {
                     one.messageImage ?
                     <img 
                         id="imageid"
-                        src={zz}
+                        src={imageSrc}
                         height="100px"
                         width="100px"
                     /> : null
