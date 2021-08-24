@@ -154,3 +154,19 @@
 .fileIcon:hover{
     cursor: pointer;
 }
+.imagePreview{
+    width: 50px;
+    height: 50px;
+}
+.preview{
+    position: relative;
+}
+.crossButton{
+    position:absolute;
+    top: 1px;
+    left: 33px;
+}
+.crossButton:hover{
+    color:red;
+    cursor: pointer;
+}

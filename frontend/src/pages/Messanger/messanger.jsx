@@ -9,6 +9,8 @@ import axios from 'axios'
 import { io } from 'socket.io-client'
 import Allusers from '../../components/allusers/allusers'
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 function Messanger() {
 
@@ -26,40 +28,40 @@ function Messanger() {
     const clickRef = useRef()
     const [popup, setPopup] = useState(false)
     const [friend, setFriend] = useState({})
-    let [chatNumber , setChatNumber] = useState(0)
-    const [chatList , setChatList] = useState(false)
+    let [chatNumber, setChatNumber] = useState(0)
+    const [chatList, setChatList] = useState(false)
     const [image, setImage] = useState({})
-    const [linkOfImage, setLinkOfImage] = useState({})
+    const [previewLink, setPreviewLink] = useState(null)
 
 
     useEffect(() => {
         socket.current = io("ws://localhost:3030")
         socket.current.on("getMessage", (data) => {
-            console.log(data,'ascasj');
-            if(data.messageImage){
+
+            if (data.messageImage) {
                 setarraivalmessage({
                     sender: data.senderId,
                     text: data.text,
-                    messageImage:data.messageImage,
+                    messageImage: data.messageImage,
                     createdAt: Date.now()
                 })
             }
-            else{
+            else {
                 setarraivalmessage({
                     sender: data.senderId,
                     text: data.text,
                     createdAt: Date.now()
                 })
             }
-            
+
         })
     }, [])
 
-    useEffect(()=>{
-        arraivalmessage && 
-        currentchat?.members.includes(arraivalmessage.sender) &&
-        setMessages((prev)=> [...prev, arraivalmessage])
-    },[arraivalmessage,currentchat])
+    useEffect(() => {
+        arraivalmessage &&
+            currentchat?.members.includes(arraivalmessage.sender) &&
+            setMessages((prev) => [...prev, arraivalmessage])
+    }, [arraivalmessage, currentchat])
 
     useEffect(() => {
         socket.current.emit("addUser", user._id)
@@ -128,55 +130,55 @@ function Messanger() {
         e.preventDefault()
         var formData = new FormData();
 
-        if( image ){
+        if (image) {
             formData.append('messageImage', image)
         }
-        if( image && newMessage ){
-        formData.append('text', newMessage)
-        formData.append('conversationId', currentchat?._id)
-       }
-       else if(!image && newMessage) {
-        formData.append('text', newMessage)
-        formData.append('conversationId', currentchat?._id)
-       }
-       else if(image && !newMessage){
-        formData.append('conversationId', currentchat?._id)
-       }
+        if (image && newMessage) {
+            formData.append('text', newMessage)
+            formData.append('conversationId', currentchat?._id)
+        }
+        else if (!image && newMessage) {
+            formData.append('text', newMessage)
+            formData.append('conversationId', currentchat?._id)
+        }
+        else if (image && !newMessage) {
+            formData.append('conversationId', currentchat?._id)
+        }
 
         const receiverId = currentchat.members.find(
             (member) => member !== user._id
         )
-        
+
 
         try {
-            var res = await axios.post(`http://localhost:3030/message`,formData,
+            var res = await axios.post(`http://localhost:3030/message`, formData,
                 {
                     headers: {
                         "Content-type": "application/json;charset=UTF-8",
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                     }
                 });
-                
-             setMessages([...messages, res.data])
-             setImage("")
-             setNewMessage("")
+
+            setMessages([...messages, res.data])
+            setImage("")
+            setNewMessage("")
 
         } catch (err) {
             console.log(err);
         }
-        if(res.data.messageImage){
+        if (res.data.messageImage) {
             socket.current.emit("sendMessage", {
                 senderId: user._id,
                 receiverId,
-                text:newMessage,
-                messageImage:res.data.messageImage
+                text: newMessage,
+                messageImage: res.data.messageImage
             })
         }
-        else{
+        else {
             socket.current.emit("sendMessage", {
                 senderId: user._id,
                 receiverId,
-                text:newMessage
+                text: newMessage
             })
         }
     }
@@ -189,81 +191,89 @@ function Messanger() {
 
         let test = chatbar.includes(data)
 
-        if(!test){
+        if (!test) {
             setChatbar([...chatbar, data])
-            if(chatbar.length >= 3){
+            if (chatbar.length >= 3) {
                 setChatNumber(old => old + 1)
             }
         }
         console.log(chatbar.length)
 
-       
-
         getfriend(data)
         setPopup(true)
         setCurrentchat(data)
 
-     }
-     
+    }
+
     const handleRemoveItem = data => {
 
-        setChatbar( ()=> chatbar.filter( item => !item?.members?.includes(data) ))
-        if( friend._id === data ) {
-            setPopup( false )
+        setChatbar(() => chatbar.filter(item => !item?.members?.includes(data)))
+        if (friend._id === data) {
+            setPopup(false)
         }
-        if(chatbar.length >= 3){
+        if (chatbar.length >= 3) {
             setChatNumber(old => old - 1)
         }
         console.log(chatbar.length)
-        if(chatbar.length <=4){
+        if (chatbar.length <= 4) {
             setChatList(false)
         }
     }
 
-    const noEffect = () =>{
+    const noEffect = () => {
         console.log('murad')
     }
 
     useEffect(() => {
         clickRef.current ? PushToChatBar() : noEffect()
-    },[clickRef])
+    }, [clickRef])
 
-    const toggleView = e=>{
+    const toggleView = e => {
         e.preventDefault()
         setPopup(!popup)
     }
-    const chatSetter = data =>{
+    const chatSetter = data => {
         setCurrentchat(data)
         getfriend(data)
         setPopup(true)
         setChatList(false)
     }
-    const  getfriend = async (data) => {
+    const getfriend = async (data) => {
         const friendID = data?.members?.find(m => m !== user._id)
         await axios.get(`http://localhost:3030/${friendID}`, {
-          headers: {
-            "Content-type": "application/json;charset=UTF-8",
-            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-          }
+            headers: {
+                "Content-type": "application/json;charset=UTF-8",
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+            }
         }).then(res => {
-          setFriend(res.data)
+            setFriend(res.data)
         })
-          .catch(err => {
-            console.log(err.messsage)
-          })
-      }
+            .catch(err => {
+                console.log(err.messsage)
+            })
+    }
 
     useEffect(() => {
         getfriend()
-      }, [currentchat, user])
+    }, [currentchat, user])
 
 
-const showhiddenChatmembers = (e) =>{
-    e.preventDefault()
-    setChatList(!chatList)
-    setPopup(false)
-}
+    const showhiddenChatmembers = (e) => {
+        e.preventDefault()
+        setChatList(!chatList)
+        setPopup(false)
+    }
 
+    const imageSetter = (e) => {
+        setImage(e.target.files[0])
+        var tmppath = URL.createObjectURL(e.target.files[0])
+        setPreviewLink(tmppath);
+    }
+    const removePreview = (e) =>{
+        e.preventDefault()
+        setPreviewLink(null)
+        setImage(null)
+    }
     return (
         <>
             <Topbar />
@@ -305,96 +315,111 @@ const showhiddenChatmembers = (e) =>{
             </div>
             <div className="chatbar">
                 <div className="singleChat">
-                    { chatbar ?
-                    chatbar.map((one, index) => {
-                        /* <div onClick={() =>chatSetter(one)} > */
-                        return index < 3 ?
-                            <div>
-                                <ChatBox
-                                    index={index}
-                                    one={one}
-                                    user={user}
-                                    // onlineusers={onlineusers}
-                                    currentchat={currentchat}
-                                    handleRemoveItem={handleRemoveItem}
-                                    chatSetter={chatSetter}
-                                />
-                            </div>
-                            :
-                            null
+                    {chatbar ?
+                        chatbar.map((one, index) => {
+                            /* <div onClick={() =>chatSetter(one)} > */
+                            return index < 3 ?
+                                <div>
+                                    <ChatBox
+                                        index={index}
+                                        one={one}
+                                        user={user}
+                                        // onlineusers={onlineusers}
+                                        currentchat={currentchat}
+                                        handleRemoveItem={handleRemoveItem}
+                                        chatSetter={chatSetter}
+                                    />
+                                </div>
+                                :
+                                null
                         })
                         : null
                     }
-           {
-            popup ? 
-            <>
-                <div className='box'>
+                    {
+                        popup ?
+                            <>
+                                <div className='box'>
 
-                    <div className="boxheader" onClick={toggleView}>
-                        {friend?.username}
-                    </div>
+                                    <div className="boxheader" onClick={toggleView}>
+                                        {friend?.username}
+                                    </div>
 
-                    <div className="boxbody">
-                        <div>
-                        {messages.map((one, index) => (
-                            <div ref={scrollRef}>
-                                <Message one={one} key={index} own={one.sender === user._id} />
-                            </div>
-                        ))}
-                        </div>
-                    </div>
-                    <div className="boxfooter">
-                        <textarea
-                            className="textinputs"
-                            placeholder="write something..."
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            value={newMessage}
-                        ></textarea>
+                                    <div className="boxbody">
+                                        <div>
+                                            {messages.map((one, index) => (
+                                                <div ref={scrollRef}>
+                                                    <Message one={one} key={index} own={one.sender === user._id} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {
+                                        previewLink ?
+                                            <div className="preview">
+                                                <img
+                                                    className="imagePreview"
+                                                    src={previewLink}
+                                                />
+                                            <span className="crossButton">
+                                                <CloseIcon style={{ fontSize: 17 }}
+                                                    onClick={removePreview}
+                                                />
+                                            </span>
+                                            </div>
+                                            : null
+                                    }
+                                    <div className="boxfooter">
+                                        <textarea
+                                            className="textinputs"
+                                            placeholder="write something..."
+                                            onChange={(e) => setNewMessage(e.target.value)}
+                                            value={newMessage}
+                                        ></textarea>
 
-                        <label htmlFor="upload-button">
-                        <span className="fileIcon">
-                            <AttachFileIcon />
-                        </span>
-                        </label>
+                                        <label htmlFor="upload-button">
+                                            <span className="fileIcon">
+                                                <AttachFileIcon />
+                                            </span>
+                                        </label>
 
-                        <input type="file"
-                         name="messageImage"
-                         id="upload-button"
-                         onChange={(e)=> setImage(e.target.files[0])} 
-                         style={{ display: "none" }}
-                         />
+                                        <input type="file"
+                                            name="messageImage"
+                                            id="upload-button"
+                                            onChange={(e) => imageSetter(e)}
+                                            style={{ display: "none" }}
+                                        />
 
-                        <button className="textsubmint" onClick={sendMessage}>Send</button>
+                                        <button className="textsubmint" onClick={sendMessage}>Send</button>
 
-                    </div> 
+                                    </div>
+                                </div>
+                            </> : null}
                 </div>
-            </> : null  }
-                </div>
 
-                <div 
-                    className={`${chatNumber > 0 ? "chatNumber" :  "hidden"}`} 
+                <div
+                    className={`${chatNumber > 0 ? "chatNumber" : "hidden"}`}
                     onClick={showhiddenChatmembers}
                 >
                     {chatNumber}
                 </div>
                 {
                     chatList ?
-                    <div className="chatListContainer">
-                        {chatbar.map((one, index) => {
-                            return index > 2 ?
-                            <ChatBox
-                                    index={index}
-                                    one={one}
-                                    user={user}
-                                    // onlineusers={onlineusers}
-                                    currentchat={currentchat}
-                                    handleRemoveItem={handleRemoveItem}
-                                    chatSetter={chatSetter}
-                                />
-                            : null
-                        })}
-                    </div>
-                    : null
+                        <div className="chatListContainer">
+                            {chatbar.map((one, index) => {
+                                return index > 2 ?
+                                    <ChatBox
+                                        index={index}
+                                        one={one}
+                                        user={user}
+                                        // onlineusers={onlineusers}
+                                        currentchat={currentchat}
+                                        handleRemoveItem={handleRemoveItem}
+                                        chatSetter={chatSetter}
+                                    />
+                                    : null
+                            })}
+                        </div>
+                        : null
                 }
                 <div className="extra">
                     <div className="extrachild alert">Alerts</div>

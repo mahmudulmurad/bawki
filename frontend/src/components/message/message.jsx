@@ -12,19 +12,22 @@ const Message = ({one,own}) => {
                     src="https://i2.wp.com/clipartart.com/images/facebook-profile-icon-clipart-7.png" 
                     alt="noimg" 
                     className="messageimg" />
-                    { one.text ?
-                     <p className="messagetext">{one.text}</p> : null
-                    }
-                    {
-                    one.messageImage ?
+                <div className="msgBody">
+                { one.text ?
+                    <p className="messagetext">{one.text}</p> : null
+                }
+                { one.messageImage ?
+                    <div className="messageImage">
                     <img 
                         id="imageid"
                         src={imageSrc}
                         height="100px"
                         width="100px"
-                    /> : null
+                        />
+                    </div>
+                     : null
                 }
-                
+                 </div>  
             </div>
             <div className="messagebottom">{format(one.createdAt)}</div>
         </div>
