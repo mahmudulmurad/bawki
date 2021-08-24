@@ -8,7 +8,7 @@ dotenv.config()
 const userRouter = require('./routes/userRouter')
 const conversationRouter = require('./routes/conversationRouter')
 const messageRouter = require('./routes/messageRouter')
-
+const Message = require('./models/messageModel');
 
 
 mongoose.connect(process.env.MONGO_URL, {
@@ -60,12 +60,22 @@ io.on("connection", function (socket) {
  
      //send and get message
      try {
-        socket.on("sendMessage", async({ senderId, receiverId, text }) => {
+        socket.on("sendMessage", async({ senderId, receiverId, text, messageImage }) => {
             const receiver = await getUser(receiverId)
-            io.to(receiver.socketId).emit("getMessage", {
-              senderId,
-              text
-            })
+            if(messageImage){
+              io.to(receiver.socketId).emit("getMessage", {
+                senderId,
+                text,
+                messageImage
+              })
+            }
+            else{
+              io.to(receiver.socketId).emit("getMessage", {
+                senderId,
+                text
+              })
+            }
+            
           })
          
      } catch (error) {

@@ -28,19 +28,30 @@ function Messanger() {
     const [friend, setFriend] = useState({})
     let [chatNumber , setChatNumber] = useState(0)
     const [chatList , setChatList] = useState(false)
-    const [image, setImage] = useState(null)
-
-
+    const [image, setImage] = useState({})
+    const [linkOfImage, setLinkOfImage] = useState({})
 
 
     useEffect(() => {
         socket.current = io("ws://localhost:3030")
         socket.current.on("getMessage", (data) => {
-            setarraivalmessage({
-                sender: data.senderId,
-                text: data.text,
-                createdAt: Date.now()
-            })
+            console.log(data,'ascasj');
+            if(data.messageImage){
+                setarraivalmessage({
+                    sender: data.senderId,
+                    text: data.text,
+                    messageImage:data.messageImage,
+                    createdAt: Date.now()
+                })
+            }
+            else{
+                setarraivalmessage({
+                    sender: data.senderId,
+                    text: data.text,
+                    createdAt: Date.now()
+                })
+            }
+            
         })
     }, [])
 
@@ -135,27 +146,38 @@ function Messanger() {
         const receiverId = currentchat.members.find(
             (member) => member !== user._id
         )
-
-        socket.current.emit("sendMessage", {
-            senderId: user._id,
-            receiverId,
-            text:newMessage
-        })
+        
 
         try {
-            const res = await axios.post(`http://localhost:3030/message`,formData,
+            var res = await axios.post(`http://localhost:3030/message`,formData,
                 {
                     headers: {
                         "Content-type": "application/json;charset=UTF-8",
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                     }
                 });
-            console.log(res.data)
-            setMessages([...messages, res.data])
-            setImage(null)
-            setNewMessage("")
+                
+             setMessages([...messages, res.data])
+             setImage("")
+             setNewMessage("")
+
         } catch (err) {
             console.log(err);
+        }
+        if(res.data.messageImage){
+            socket.current.emit("sendMessage", {
+                senderId: user._id,
+                receiverId,
+                text:newMessage,
+                messageImage:res.data.messageImage
+            })
+        }
+        else{
+            socket.current.emit("sendMessage", {
+                senderId: user._id,
+                receiverId,
+                text:newMessage
+            })
         }
     }
 
