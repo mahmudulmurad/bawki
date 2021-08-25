@@ -17,19 +17,24 @@
 }
 .messagetext{
     padding:10px;
-    border-radius: 20px;
-    background-color: royalblue;
+    border-radius: 5px;
+    background-color: #FCDEE0;
     max-width: 300px;
-    color: white;
+    color: #000;
+    margin-bottom: 10px;
 }
 .message.own{
     align-items: flex-end;
 }
 .message.own .messagetext{
-    background-color: rgb(245,241,241);
+    background-color: #F1F1F2;
     color: black;
 }
 .msgBody{
     display: flex;
     flex-direction: column;
+}
+.inboxImage{
+    height: 100px;
+    width: 100px;
 }

@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios from 'axios';
 
 export const loginCall = async (userData, dispatch) => {
     dispatch({ type: "LOGIN_START" });

@@ -8,7 +8,6 @@ dotenv.config()
 const userRouter = require('./routes/userRouter')
 const conversationRouter = require('./routes/conversationRouter')
 const messageRouter = require('./routes/messageRouter')
-const Message = require('./models/messageModel');
 
 
 mongoose.connect(process.env.MONGO_URL, {

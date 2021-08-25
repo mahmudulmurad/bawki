@@ -1,27 +1,27 @@
 
  .conversation{
-     width: 80%;
+     width: auto;
      display: flex;
      align-items: center;
      cursor: pointer;
-     padding:10px;
-     margin-top: 20px;
+     padding:0 10px;
+     margin-top: 5%;
  }
  .conversation:hover{
      background-color: rgb(156, 148, 148);
  }
  .conversationimage{
-     height: 40px;
-     width: 40px;
+     height: 30px;
+     width: 30px;
      border-radius: 50%;
      object-fit: cover;
  }
  .textspan{
-     font-weight: 700;
+     font-weight: 500;
  }
  .chatOnlineImgContainer{
     position: relative;
-    margin-right: 20px;
+    margin-right: 10px;
 
  }
  .chatOnlineBadge {

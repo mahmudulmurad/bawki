@@ -160,8 +160,9 @@ function Messanger() {
                 });
 
             setMessages([...messages, res.data])
-            setImage("")
             setNewMessage("")
+            setPreviewLink(null)
+            setImage(null)
 
         } catch (err) {
             console.log(err);
@@ -279,8 +280,8 @@ function Messanger() {
             <Topbar />
             <div className="messanger">
                 <div className="chatmenu">
+                <span className="chatmenutitle">All Conversations : </span>
                     <div className="chatmenuwrapper">
-                        <span>All conversations : </span>
                         {conversations.map((one, index) => (
                             <div onClick={() => PushToChatBar(one)} ref={clickRef}>
                                 <Conversation
@@ -295,12 +296,60 @@ function Messanger() {
                 </div>
                 <div className="chatbox">
                     <div className="chatboxwrapper">
-                        open a conversation
+                    {/* { currentchat ?
+                            (<>
+                                <div className="chatboxtop">
+                                    {messages.map((one, index) => (
+                                        <div ref={scrollRef}>
+                                            <Message one={one} key={index} own={one.sender === user._id} />
+                                        </div>
+                                    ))}
+                                </div>
+                                { previewLink ?
+                                    <div className="preview">
+                                        <img
+                                            className="imagePreview"
+                                            src={previewLink}
+                                        />
+                                    <span className="crossButton">
+                                        <CloseIcon style={{ fontSize: 17 }}
+                                            onClick={removePreview}
+                                        />
+                                    </span>
+                                    </div>
+                                    : null
+                                    }
+                                <div className="chatboxbottom">
+                                    <textarea
+                                        className="textinputs"
+                                        placeholder="write something..."
+                                        onChange={(e) => setNewMessage(e.target.value)}
+                                        value={newMessage}
+                                    ></textarea>
+
+                                    <label htmlFor="upload-button">
+                                            <span className="fileIcon">
+                                                <AttachFileIcon />
+                                            </span>
+                                        </label>
+
+                                        <input type="file"
+                                            name="messageImage"
+                                            id="upload-button"
+                                            onChange={(e) => imageSetter(e)}
+                                            style={{ display: "none" }}
+                                        />
+                                    <button className="textsubmint" onClick={sendMessage}>Send</button>
+                                </div>
+                            </>)
+                            :
+                            (<span className="noconversation">open a conversation</span>)
+                        } */}
                     </div>
                 </div>
-                <div className="chatonline">
+                <div className="alluser">
+                <span className="chatmenutitle">People you may know: </span>
                     <div className='allfriends'>
-                        <span>Not Connect: </span>
                         {allUsers.map((one, index) => (
                             <div>
                                 <Allusers

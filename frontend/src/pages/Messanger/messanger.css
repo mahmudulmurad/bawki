@@ -5,18 +5,28 @@
     
 }
 .chatmenu{
-    flex: 3.5;
+    flex: 2;
+    box-shadow:1px 0 #888888;
 }
+.chatmenutitle{
+   font-size: 16px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 10px;
+}
+
 .chatmenuwrapper{
-    height: 100%;
+    height: 91%;
     overflow: auto;
 }
+
 .allfriends{
-    height: 100%;
+    height: 91%;
     overflow: auto;
 }
 .chatbox{
-    flex: 5.5;
+    flex: 8;
 }
 .chatboxwrapper{
     display: flex;
@@ -54,8 +64,8 @@
     margin-top: 30%;
     color: rgb(224, 220, 220);
 }
-.chatonline{
-    flex: 3;
+.alluser{
+    flex: 2;
 }
 .chatboxwrapper,
 .chatonlinewrapper{
@@ -97,17 +107,16 @@
 .box{
     width: 250px;
     height: 380px;
-    padding: 10px;
     display: flex;
     flex-direction: column;
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid #F1F1F2;
     position: absolute;
     top: -405px;
     right: 5%;
 }
 .boxheader{
-    background-color: #1877f2;
+    background-color: #FF5A60;
     flex: 1;
     padding: 5px;
     color: white;

@@ -31,33 +31,33 @@ export default function Signup() {
         }
     }
     return (
-        <div className="login">
-            <div className="loginWrapper">
-                <div className="loginLeft">
-                    <h3 className="loginLogo">bawki?</h3>
-                    <span className="loginDesc">
-                        Connect with friends and the world around you on Lamasocial.
+        <div className="signup">
+            <div className="signupWrapper">
+                <div className="signupLeft">
+                    <h4 className="signupLogo">Taslima Marriage Media's Emissary</h4>
+                    <span className="signupDesc">
+                    Find out your better half for the better future.
                     </span>
                 </div>
-                <div className="loginRight">
-                    <form className="loginBox" onSubmit={clickSignup}>
+                <div className="signupRight">
+                    <form className="signupBox" onSubmit={clickSignup}>
                         <input
                             placeholder="Username"
                             required
-                            className="loginInput"
+                            className="signupInput"
                             ref={username}
                         />
                         <input
                             placeholder="Email"
                             required
-                            className="loginInput"
+                            className="signupInput"
                             type="email"
                             ref={email}
                         />
                         <input
                             placeholder="Password"
                             required
-                            className="loginInput"
+                            className="signupInput"
                             type="password"
                             minLength="6"
                             ref={password}
@@ -65,17 +65,18 @@ export default function Signup() {
                         <input
                             placeholder="Password Again"
                             required
-                            className="loginInput"
+                            className="signupInput"
                             type="password"
                             ref={passwordAgain}
                         />
-                        <button className="loginButton" type="submit">
-                            Sign Up
-                        </button>
-                        <button className="loginRegisterButton">
-                            <Link to="/" style={{ textDecoration: "none", color: "white" }}>Log into Account</Link>
-                        </button>
-
+                        <div className="buttondiv">
+                            <button className="signupButton" type="submit">
+                                Sign Up
+                            </button>
+                            <button className="signupRegisterButton">
+                                <Link to="/login" style={{ textDecoration: "none", color: "white" }}>/login</Link>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

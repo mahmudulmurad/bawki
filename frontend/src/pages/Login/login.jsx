@@ -18,9 +18,9 @@ export default function Login() {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h3 className="loginLogo">bawki?</h3>
+          <h4 className="loginLogo">Taslima Marriage Media's Emissary</h4>
           <span className="loginDesc">
-            Connect with friends and the world around you on Lamasocial.
+            Find your better half for the better future.
           </span>
         </div>
         <div className="loginRight">
@@ -41,14 +41,14 @@ export default function Login() {
               ref={password}
             />
             <button className="loginButton" type="submit">
-              Log In
+              Login
             </button>
-            <span className="loginForgot">Forgot Password?</span>
+            {/* <span className="loginForgot">Forgot Password?</span>
             <button className="loginRegisterButton" >
                 <Link to="/register" style={{textDecoration:"none",color:"white"}}>
-                Create a New Account
+                  Create a New Account
                 </Link>
-            </button>
+            </button> */}
             
           </form>
         </div>

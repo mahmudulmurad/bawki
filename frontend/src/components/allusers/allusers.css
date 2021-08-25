@@ -3,21 +3,22 @@
     width: 80%;
     display: flex;
     align-items: center;
-    padding:10px;
-    margin-top: 20px;
+    padding: 0 10px;
+    margin-top: 10px;
 }
 .singleuser:hover{
     background-color: rgb(156, 148, 148);
+    cursor: pointer;
 }
 .userimage{
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    margin-right: 20px;
-    object-fit: cover;
+    height: 30px;
+     width: 30px;
+     border-radius: 50%;
+     object-fit: cover;
 }
 .textspan{
-    font-weight: 700;
+    font-weight: 500;
+    margin-left: 10px;
 }
 .addbutton{
     margin-left: auto;

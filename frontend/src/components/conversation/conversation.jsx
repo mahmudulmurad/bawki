@@ -8,9 +8,7 @@ const Conversation = ({ one, user, onlineusers }) => {
 
   useEffect(() => {
     const friendID = one.members.find(m => m !== user._id)
-
     let exist = onlineusers.some(one => one._id === friendID)
-    
     if (exist) {
       setLight(true)
     } else {
