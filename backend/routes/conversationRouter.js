@@ -38,18 +38,5 @@ router.get("/conversation/:userId",auth, async (req, res) => {
       res.status(500).json(err);
     }
   });
+  
 module.exports = router
-
-// let searchUser = await User.findOneAndUpdate({ _id: searchUserId },
-//   { $push: { pendingConnectionRequests: userId } }, { new: true }
-// ).exec()
-// if (!searchUser) {
-//   res.status(500).json({
-//       status: false,
-//       message: "requesat not sent !"
-//   })
-//   return
-// }
-// await User.findOneAndUpdate({ _id: userId },
-//   { $push: { sendConnectionRequests: searchUserId } }, { new: true }
-// ).exec()

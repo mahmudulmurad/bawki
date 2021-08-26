@@ -5,14 +5,14 @@ import CloseIcon from '@material-ui/icons/Close';
 
 
 
-const ChatBox = ({one, user,index,handleRemoveItem, chatSetter}) => {
+const ChatBox = ({one, user, index, handleRemoveItem, chatSetter}) => {
 
     const [friend, setFriend] = useState({})
 
     useEffect(() => {
         const friendID = one?.members?.find(m => m !== user._id)
         const getfriend = async () => {
-          await axios.get(`http://localhost:3030/${friendID}`, {
+          await axios.get(`${process.env.REACT_APP_BACK_END_URL}/${friendID}`, {
             headers: {
               "Content-type": "application/json;charset=UTF-8",
               'Authorization': 'Bearer ' + sessionStorage.getItem('token')

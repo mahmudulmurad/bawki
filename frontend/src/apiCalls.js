@@ -3,7 +3,7 @@ import Axios from 'axios';
 export const loginCall = async (userData, dispatch) => {
     dispatch({ type: "LOGIN_START" });
     try {
-        const res = await Axios.post('http://localhost:3030/login', userData)
+        const res = await Axios.post(`${process.env.REACT_APP_BACK_END_URL}/login`, userData)
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data.user })
         await sessionStorage.setItem('token', res.data.token);
     } catch (error) {
@@ -13,7 +13,7 @@ export const loginCall = async (userData, dispatch) => {
 export const authenticatedUSer = async (dispatch) =>{
     dispatch({ type: "LOGIN_START" });
     try {
-        const res = await Axios.get('http://localhost:3030/me',{
+        const res = await Axios.get(`${process.env.REACT_APP_BACK_END_URL}/me`,{
             headers: {
               "Content-type": "application/json;charset=UTF-8",
               'Authorization': 'Bearer ' + sessionStorage.getItem('token')

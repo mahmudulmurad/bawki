@@ -23,8 +23,8 @@ export default function Signup() {
                 password: password.current.value,
             };
             try {
-                await axios.post("http://localhost:3030/register", user);
-                history.push("/");
+                await axios.post(`${process.env.REACT_APP_BACK_END_URL}/register`, user);
+                history.push("/login");
             } catch (err) {
                 console.log(err);
             }
@@ -34,7 +34,7 @@ export default function Signup() {
         <div className="signup">
             <div className="signupWrapper">
                 <div className="signupLeft">
-                    <h4 className="signupLogo">Taslima Marriage Media's Emissary</h4>
+                    <h4 className="signupLogo">TMM Emissary</h4>
                     <span className="signupDesc">
                     Find out your better half for the better future.
                     </span>

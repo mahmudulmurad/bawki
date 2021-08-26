@@ -10,7 +10,7 @@ const Allusers = ({one}) => {
             "receiverId":one._id
         }
         try {
-            await axios.post(`http://localhost:3030/createConversation`,obj,
+            await axios.post(`${process.env.REACT_APP_BACK_END_URL}/createConversation`,obj,
             {
                 headers: {
                     "Content-type": "application/json;charset=UTF-8",

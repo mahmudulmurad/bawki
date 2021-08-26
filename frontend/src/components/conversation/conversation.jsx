@@ -16,7 +16,7 @@ const Conversation = ({ one, user, onlineusers }) => {
     }
 
     const getfriend = async () => {
-      await axios.get(`http://localhost:3030/${friendID}`, {
+      await axios.get(`${process.env.REACT_APP_BACK_END_URL}/${friendID}`, {
         headers: {
           "Content-type": "application/json;charset=UTF-8",
           'Authorization': 'Bearer ' + sessionStorage.getItem('token')

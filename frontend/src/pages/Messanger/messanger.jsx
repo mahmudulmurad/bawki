@@ -35,7 +35,7 @@ function Messanger() {
 
 
     useEffect(() => {
-        socket.current = io("ws://localhost:3030")
+        socket.current = io(process.env.REACT_APP_WEB_SOCKET)
         socket.current.on("getMessage", (data) => {
 
             if (data.messageImage) {
@@ -72,7 +72,7 @@ function Messanger() {
 
     const getConversations = async () => {
         try {
-            const res = await axios.get(`http://localhost:3030/conversation/${user._id}`,
+            const res = await axios.get(`${process.env.REACT_APP_BACK_END_URL}/conversation/${user._id}`,
                 {
                     headers: {
                         "Content-type": "application/json;charset=UTF-8",
@@ -90,7 +90,7 @@ function Messanger() {
 
     const getAlluser = async () => {
         try {
-            const res = await axios.get(`http://localhost:3030/all/users`,
+            const res = await axios.get(`${process.env.REACT_APP_BACK_END_URL}/all/users`,
                 {
                     headers: {
                         "Content-type": "application/json;charset=UTF-8",
@@ -111,7 +111,7 @@ function Messanger() {
     useEffect(() => {
         const getMessages = async () => {
             try {
-                const res = await axios.get(`http://localhost:3030/getmessages/${currentchat?._id}`,
+                const res = await axios.get(`${process.env.REACT_APP_BACK_END_URL}/getmessages/${currentchat?._id}`,
                     {
                         headers: {
                             "Content-type": "application/json;charset=UTF-8",
@@ -151,7 +151,7 @@ function Messanger() {
 
 
         try {
-            var res = await axios.post(`http://localhost:3030/message`, formData,
+            var res = await axios.post(`${process.env.REACT_APP_BACK_END_URL}/message`, formData,
                 {
                     headers: {
                         "Content-type": "application/json;charset=UTF-8",
@@ -241,7 +241,7 @@ function Messanger() {
     }
     const getfriend = async (data) => {
         const friendID = data?.members?.find(m => m !== user._id)
-        await axios.get(`http://localhost:3030/${friendID}`, {
+        await axios.get(`${process.env.REACT_APP_BACK_END_URL}/${friendID}`, {
             headers: {
                 "Content-type": "application/json;charset=UTF-8",
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token')

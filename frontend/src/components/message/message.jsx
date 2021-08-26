@@ -3,7 +3,7 @@ import {format} from 'timeago.js'
 
 const Message = ({one,own}) => {
     if(one.messageImage){
-        var imageSrc=`http://localhost:3030/${one?.messageImage}`
+        var imageSrc=`${process.env.REACT_APP_BACK_END_URL}/${one?.messageImage}`
     }
     return (
         <div className={own ? "message own" : "message"}>

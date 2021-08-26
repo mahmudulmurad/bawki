@@ -18,7 +18,7 @@ export default function Login() {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h4 className="loginLogo">Taslima Marriage Media's Emissary</h4>
+          <h4 className="loginLogo">TMM Emissary</h4>
           <span className="loginDesc">
             Find your better half for the better future.
           </span>
