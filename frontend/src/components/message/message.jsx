@@ -22,6 +22,7 @@ const Message = ({one,own}) => {
                         id="imageid"
                         src={imageSrc}
                         className="inboxImage"
+                        alt="noimg"
                         />
                     </div>
                      : null

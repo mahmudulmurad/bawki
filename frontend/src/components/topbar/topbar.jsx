@@ -1,5 +1,5 @@
 import './topbar.css';
-import { Search, Person, Chat, Notifications, ExitToApp } from "@material-ui/icons";
+import { Search,  Chat, ExitToApp } from "@material-ui/icons";
 import { logoutUser } from '../../apiCalls';
 import { useContext } from 'react';
 import {AuthContext} from '../../context/authContext'
