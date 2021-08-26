@@ -11,7 +11,6 @@ import Allusers from '../../components/allusers/allusers'
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import CloseIcon from '@material-ui/icons/Close';
 
-
 function Messanger() {
 
     const { user } = useContext(AuthContext)
@@ -84,6 +83,7 @@ function Messanger() {
             console.log(err)
         }
     };
+
     useEffect(() => {
         getConversations()
     }, [user._id]);
@@ -408,6 +408,7 @@ function Messanger() {
                                                 <img
                                                     className="imagePreview"
                                                     src={previewLink}
+                                                    alt="noimg"
                                                 />
                                             <span className="crossButton">
                                                 <CloseIcon style={{ fontSize: 17 }}
