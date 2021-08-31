@@ -1,5 +1,5 @@
 .messanger{
-    height: calc(100vh - 87px);
+    height: calc(100vh - 50px);
     display: flex;
     width: 100%;
     
@@ -17,12 +17,12 @@
 }
 
 .chatmenuwrapper{
-    height: 91%;
+    height: 86%;
     overflow: auto;
 }
 
 .allfriends{
-    height: 91%;
+    height: 85%;
     overflow: auto;
 }
 .chatbox{
@@ -74,12 +74,12 @@
 }
 .chatbar{
     height: 30px;
-    width: 100%;
+    width: 65%;
     position: absolute;
     background-color: transparent;
     bottom: 1%;
+    left: 18%;
     display: flex;
-    justify-content: space-between;
 }
 .singleChat{
     /* width: 75%; */
@@ -89,12 +89,11 @@
     position: relative;
 }
 .extra{
-    flex: 3;
     display: flex;
     color: black;
 }
 .extrachild{
-    width: 92px;
+    width: 33%;
     text-align: center;
     cursor: pointer;
     padding: 5px;
@@ -156,8 +155,8 @@
     flex-direction: column;
     background-color: white;
     position: absolute;
-    top: -202px;
-    right: 25%;
+    right: 0%;
+    bottom: 103%;
     overflow-y: scroll;
 }
 .fileIcon:hover{

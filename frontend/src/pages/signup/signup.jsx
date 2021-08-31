@@ -74,7 +74,7 @@ export default function Signup() {
                                 Sign Up
                             </button>
                             <button className="signupRegisterButton">
-                                <Link to="/login" style={{ textDecoration: "none", color: "white" }}>/login</Link>
+                                <Link to="/login" style={{ textDecoration: "none", color: "white" }}>Login</Link>
                             </button>
                         </div>
                     </form>

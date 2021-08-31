@@ -60,21 +60,25 @@ io.on("connection", function (socket) {
      //send and get message
      try {
         socket.on("sendMessage", async({ senderId, receiverId, text, messageImage }) => {
+          console.log({ senderId, receiverId, text, messageImage });
             const receiver = await getUser(receiverId)
-            if(messageImage){
-              io.to(receiver.socketId).emit("getMessage", {
-                senderId,
-                text,
-                messageImage
-              })
+            if ( !messageImage && !text) {
+              console.log('invalid message request');
+            } else {
+              if(messageImage){
+                io.to(receiver.socketId).emit("getMessage", {
+                  senderId,
+                  text,
+                  messageImage
+                })
+              }
+              else{
+                io.to(receiver.socketId).emit("getMessage", {
+                  senderId,
+                  text
+                })
+              }
             }
-            else{
-              io.to(receiver.socketId).emit("getMessage", {
-                senderId,
-                text
-              })
-            }
-            
           })
          
      } catch (error) {

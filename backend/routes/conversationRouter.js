@@ -8,22 +8,14 @@ const User = require("../models/userModel")
 router.post('/createConversation', auth, async (req, res) => {
   try {
     const { receiverId } = req.body
-    let isExists = await Conversation.find({ members: { $in: [receiverId] } })
+    const conversation = await Conversation.where('members',[receiverId,req.user._id] )
 
-    if (isExists.length > 0) {
-
-      res.status(403).json({
-        status: false,
-        error: 'conversation already exists'
-      })
-
-    }
-    else {
-
+    if (conversation.length > 0) {
+      res.status(403).send('Already conversation is created with this user')
+    }else {
       const shakeHand = await new Conversation({
         members: [req.user._id, receiverId]
       })
-
       await shakeHand.save()
 
       await User.findOneAndUpdate({ _id: receiverId },
@@ -31,6 +23,7 @@ router.post('/createConversation', auth, async (req, res) => {
 
       await User.findOneAndUpdate({ _id: req.user._id },
         { $addToSet: { friends: receiverId } }, { new: true }).exec()
+        
       res.status(201).json(shakeHand)
     }
 

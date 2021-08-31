@@ -2,6 +2,7 @@ import './message.css';
 import {format} from 'timeago.js'
 
 const Message = ({one,own}) => {
+    
     if(one.messageImage){
         var imageSrc=`${process.env.REACT_APP_BACK_END_URL}/${one?.messageImage}`
     }

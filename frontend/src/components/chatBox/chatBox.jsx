@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 
 
-const ChatBox = ({one, user, index, handleRemoveItem, chatSetter}) => {
+const ChatBox = ({one, user, handleRemoveItem, chatSetter}) => {
 
     const [friend, setFriend] = useState({})
 

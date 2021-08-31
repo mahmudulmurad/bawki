@@ -31,27 +31,36 @@ function Messanger() {
     const [chatList, setChatList] = useState(false)
     const [image, setImage] = useState({})
     const [previewLink, setPreviewLink] = useState(null)
+    const [chatChange, setChatchange] =  useState(false)
+    const [forPush, setForPush]=  useState(false)
 
 
     useEffect(() => {
         socket.current = io(process.env.REACT_APP_WEB_SOCKET)
         socket.current.on("getMessage", (data) => {
-
-            if (data.messageImage) {
+            const {messageImage,senderId,text} = data
+            console.log(data,'messageasche frm server');
+            if (!messageImage && !text) {
+                console.log('invalid message');
+            } else {
+                
+            if (messageImage) {
                 setarraivalmessage({
-                    sender: data.senderId,
-                    text: data.text,
-                    messageImage: data.messageImage,
+                    sender:senderId,
+                    text: text,
+                    messageImage: messageImage,
                     createdAt: Date.now()
                 })
             }
             else {
                 setarraivalmessage({
-                    sender: data.senderId,
-                    text: data.text,
+                    sender: senderId,
+                    text: text,
                     createdAt: Date.now()
                 })
             }
+            }
+
 
         })
     }, [])
@@ -68,6 +77,10 @@ function Messanger() {
             setOnlineUsers(user.friends.filter((f) => users.some((u) => u.userId === f._id)))
         })
     }, [user])
+
+    const conversationChange =() =>{
+        setChatchange(!chatChange)
+    }
 
     const getConversations = async () => {
         try {
@@ -86,7 +99,7 @@ function Messanger() {
 
     useEffect(() => {
         getConversations()
-    }, [user._id]);
+    }, [user._id,chatChange]);
 
     const getAlluser = async () => {
         try {
@@ -105,7 +118,7 @@ function Messanger() {
 
     useEffect(() => {
         getAlluser()
-    }, [user._id]);
+    }, [user._id,chatChange]); 
 
 
     useEffect(() => {
@@ -158,29 +171,33 @@ function Messanger() {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                     }
                 });
-
-            setMessages([...messages, res.data])
+            if(res.status === 201){
+                setMessages([...messages, res.data])
+            }
             setNewMessage("")
             setPreviewLink(null)
             setImage(null)
-
         } catch (err) {
             console.log(err);
         }
-        if (res.data.messageImage) {
-            socket.current.emit("sendMessage", {
-                senderId: user._id,
-                receiverId,
-                text: newMessage,
-                messageImage: res.data.messageImage
-            })
-        }
-        else {
-            socket.current.emit("sendMessage", {
-                senderId: user._id,
-                receiverId,
-                text: newMessage
-            })
+        if (res.status===204) {
+            console.log('invalid message');
+        } else {
+            if (res.data.messageImage) {
+                socket.current.emit("sendMessage", {
+                    senderId: user._id,
+                    receiverId,
+                    text: newMessage,
+                    messageImage: res.data.messageImage
+                })
+            }
+            else {
+                socket.current.emit("sendMessage", {
+                    senderId: user._id,
+                    receiverId,
+                    text: newMessage
+                })
+            }
         }
     }
 
@@ -188,10 +205,16 @@ function Messanger() {
         scrollRef.current?.scrollIntoView({ behavior: "smooth" })
     }, [messages])
 
+    const noEffect = () => {
+        console.log('murad')
+    }
+
+    useEffect(() => {
+        clickRef.current ? PushToChatBar() : noEffect()
+    }, [clickRef])
+
     const PushToChatBar = (data) => {
-
         let test = chatbar.includes(data)
-
         if (!test) {
             setChatbar([...chatbar, data])
             if (chatbar.length >= 3) {
@@ -199,11 +222,9 @@ function Messanger() {
             }
         }
         console.log(chatbar.length)
-
         getfriend(data)
         setPopup(true)
         setCurrentchat(data)
-
     }
 
     const handleRemoveItem = data => {
@@ -221,13 +242,7 @@ function Messanger() {
         }
     }
 
-    const noEffect = () => {
-        console.log('murad')
-    }
-
-    useEffect(() => {
-        clickRef.current ? PushToChatBar() : noEffect()
-    }, [clickRef])
+    
 
     const toggleView = e => {
         e.preventDefault()
@@ -270,7 +285,7 @@ function Messanger() {
         var tmppath = URL.createObjectURL(e.target.files[0])
         setPreviewLink(tmppath);
     }
-    const removePreview = (e) =>{
+    const removePreview = (e) => {
         e.preventDefault()
         setPreviewLink(null)
         setImage(null)
@@ -280,7 +295,7 @@ function Messanger() {
             <Topbar />
             <div className="messanger">
                 <div className="chatmenu">
-                <span className="chatmenutitle">All Conversations : </span>
+                    <span className="chatmenutitle">All Conversations : </span>
                     <div className="chatmenuwrapper">
                         {conversations.map((one, index) => (
                             <div onClick={() => PushToChatBar(one)} ref={clickRef}>
@@ -293,10 +308,15 @@ function Messanger() {
                             </div>
                         ))}
                     </div>
+                    <div className="extra">
+                        <div className="extrachild alert">Alerts</div>
+                        <div className="extrachild previouschat">Chats</div>
+                        <div className="extrachild active">Active</div>
+                    </div>
                 </div>
                 <div className="chatbox">
                     <div className="chatboxwrapper">
-                    {/* { currentchat ?
+                        {/* { currentchat ?
                             (<>
                                 <div className="chatboxtop">
                                     {messages.map((one, index) => (
@@ -348,7 +368,7 @@ function Messanger() {
                     </div>
                 </div>
                 <div className="alluser">
-                <span className="chatmenutitle">People you may know: </span>
+                    <span className="chatmenutitle">People you may know: </span>
                     <div className='allfriends'>
                         {allUsers.map((one, index) => (
                             <div>
@@ -356,6 +376,7 @@ function Messanger() {
                                     key={index}
                                     one={one}
                                     user={user}
+                                    conversationChange={conversationChange}
                                 />
                             </div>
                         ))}
@@ -410,11 +431,11 @@ function Messanger() {
                                                     src={previewLink}
                                                     alt="noimg"
                                                 />
-                                            <span className="crossButton">
-                                                <CloseIcon style={{ fontSize: 17 }}
-                                                    onClick={removePreview}
-                                                />
-                                            </span>
+                                                <span className="crossButton">
+                                                    <CloseIcon style={{ fontSize: 17 }}
+                                                        onClick={removePreview}
+                                                    />
+                                                </span>
                                             </div>
                                             : null
                                     }
@@ -471,11 +492,11 @@ function Messanger() {
                         </div>
                         : null
                 }
-                <div className="extra">
+                {/* <div className="extra">
                     <div className="extrachild alert">Alerts</div>
                     <div className="extrachild previouschat">Chats</div>
                     <div className="extrachild active">Active</div>
-                </div>
+                </div> */}
             </div>
 
         </>

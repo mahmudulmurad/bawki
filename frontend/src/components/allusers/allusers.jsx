@@ -3,20 +3,20 @@ import { Add } from "@material-ui/icons";
 import axios from 'axios';
 
 
-const Allusers = ({one}) => {
-
+const Allusers = ({one,conversationChange}) => {
     const addFriends = async() =>{
         let obj={
             "receiverId":one._id
         }
         try {
-            await axios.post(`${process.env.REACT_APP_BACK_END_URL}/createConversation`,obj,
+           await axios.post(`${process.env.REACT_APP_BACK_END_URL}/createConversation`,obj,
             {
                 headers: {
                     "Content-type": "application/json;charset=UTF-8",
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
+            conversationChange()
             } catch (err) {
                 console.log(err)
             }
