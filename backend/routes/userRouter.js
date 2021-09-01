@@ -101,15 +101,14 @@ router.get('/:id', auth, async (req, res) => {
     }
 })
 //get friends
-router.get("/friends", auth, async (req, res) => {
+router.get("/myFriends/my", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
-
         const friends = await Promise.all(
             user.friends.map((friendId) => {
                 return User.findById(friendId)
             })
-        );
+        )
         let friendList = [];
         friends.map((friend) => {
             const { _id, username, email } = friend

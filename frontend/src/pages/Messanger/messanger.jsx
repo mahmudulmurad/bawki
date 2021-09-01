@@ -3,6 +3,7 @@ import './messanger.css'
 import Conversation from '../../components/conversation/conversation'
 import Message from '../../components/message/message'
 import ChatBox from '../../components/chatBox/chatBox'
+import OnlineUser from '../../components/onlineusers/onlineUser'
 import { AuthContext } from '../../context/authContext'
 import { useContext, useState, useEffect, useRef } from 'react'
 import axios from 'axios'
@@ -32,7 +33,11 @@ function Messanger() {
     const [image, setImage] = useState({})
     const [previewLink, setPreviewLink] = useState(null)
     const [chatChange, setChatchange] =  useState(false)
-    const [forPush, setForPush]=  useState(false)
+    const [previousChats, setPreviousChats]=  useState(false)
+    const [previousConverstation,setPreviousConversation] = useState([])
+    const [allChats, setAllChats]=  useState(true)
+    const [activeChats, setActiveChats]=  useState(false)
+
 
 
     useEffect(() => {
@@ -77,7 +82,6 @@ function Messanger() {
             setOnlineUsers(user.friends.filter((f) => users.some((u) => u.userId === f._id)))
         })
     }, [user])
-
     const conversationChange =() =>{
         setChatchange(!chatChange)
     }
@@ -290,6 +294,37 @@ function Messanger() {
         setPreviewLink(null)
         setImage(null)
     }
+    const myAllChats = e =>{
+        e.preventDefault()
+        setAllChats(true)
+        setPreviousChats(false)
+        setActiveChats(false)
+    }
+    const mychats =async(e)=>{
+        e.preventDefault()
+        setAllChats(false)
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_BACK_END_URL}/chat/${user._id}`,
+                {
+                    headers: {
+                        "Content-type": "application/json;charset=UTF-8",
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+                    }
+                });
+            setPreviousConversation(res.data)
+            setPreviousChats(true)
+            setActiveChats(false)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const activeUsers = e =>{
+        e.preventDefault()
+        setPreviousChats(false)
+        setAllChats(false)
+        setActiveChats(true)
+    }
     return (
         <>
             <Topbar />
@@ -297,7 +332,9 @@ function Messanger() {
                 <div className="chatmenu">
                     <span className="chatmenutitle">All Conversations : </span>
                     <div className="chatmenuwrapper">
-                        {conversations.map((one, index) => (
+                        {
+                            allChats ?
+                            conversations.map((one, index) => (
                             <div onClick={() => PushToChatBar(one)} ref={clickRef}>
                                 <Conversation
                                     key={index}
@@ -306,12 +343,40 @@ function Messanger() {
                                     onlineusers={onlineusers}
                                 />
                             </div>
-                        ))}
+                            ))
+                            :
+                            previousChats ?
+                            previousConverstation.map((one, index) => (
+                            <div onClick={() => PushToChatBar(one)} ref={clickRef}>
+                                <Conversation
+                                    key={index}
+                                    one={one}
+                                    user={user}
+                                    onlineusers={onlineusers}
+                                />
+                            </div>
+                            ))
+                            : activeChats ?
+                                <OnlineUser
+                                    onlineusers={onlineusers}
+                                    user={user}
+                                    PushToChatBar={PushToChatBar}
+                                    ref={clickRef}
+                                />
+                            : null
+                        }
+                        
                     </div>
                     <div className="extra">
-                        <div className="extrachild alert">Alerts</div>
-                        <div className="extrachild previouschat">Chats</div>
-                        <div className="extrachild active">Active</div>
+                        <div className="extrachild alert"
+                        onClick={myAllChats}
+                        >All</div>
+                        <div className="extrachild previouschat"
+                            onClick={mychats}
+                        >Chats</div>
+                        <div className="extrachild active"
+                        onClick={activeUsers}
+                        >Active</div>
                     </div>
                 </div>
                 <div className="chatbox">

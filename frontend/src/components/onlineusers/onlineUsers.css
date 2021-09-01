@@ -1,0 +1,35 @@
+
+ .conversation{
+    width: auto;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding:0 10px;
+    margin-top: 5%;
+}
+.conversation:hover{
+    background-color: rgb(156, 148, 148);
+}
+.conversationimage{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.textspan{
+    font-weight: 500;
+}
+.chatOnlineImgContainer{
+   position: relative;
+   margin-right: 10px;
+
+}
+.chatOnlineBadge {
+   width: 10px;
+   height: 10px;
+   border-radius: 50%;
+   background-color: limegreen;
+   position: absolute;
+   top: 2px;
+   right: 2px;
+ }
