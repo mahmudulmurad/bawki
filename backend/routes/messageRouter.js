@@ -31,6 +31,7 @@ const upload = multer({
     fileSize: 1024 * 1024 * 15
   }
 });
+
 //creatre message
 router.post('/message', upload.single('messageImage'), auth, async (req, res) => {
   try {
