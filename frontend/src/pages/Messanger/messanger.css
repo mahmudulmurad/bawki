@@ -6,7 +6,6 @@
 }
 .chatmenu{
     flex: 2;
-    box-shadow:1px 0 #888888;
 }
 .chatmenutitle{
    font-size: 16px;
@@ -91,6 +90,7 @@
 .extra{
     display: flex;
     color: black;
+    border: 1px solid #888888;
 }
 .extrachild{
     width: 33%;
