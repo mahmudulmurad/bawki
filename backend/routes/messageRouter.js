@@ -35,7 +35,6 @@ const upload = multer({
 //creatre message
 router.post('/message', upload.single('messageImage'), auth, async (req, res) => {
   try {
-    console.log(req.file);
     let data
 
     if (!req.file && !req.body.text) {

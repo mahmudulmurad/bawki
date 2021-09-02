@@ -165,7 +165,6 @@ function Messanger() {
         const receiverId = currentchat.members.find(
             (member) => member !== user._id
         )
-    console.log(formData,image,'data to pass');
 
         try {
             var res = await axios.post(`${process.env.REACT_APP_BACK_END_URL}/message`, formData,
@@ -175,7 +174,6 @@ function Messanger() {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                     }
                 });
-            console.log(res);
             if (res.status === 201) {
                 setMessages([...messages, res.data])
             }
@@ -211,7 +209,7 @@ function Messanger() {
     }, [messages])
 
     const noEffect = () => {
-        console.log('murad')
+        console.log('nosuchfunctionalityofclick')
     }
 
     useEffect(() => {
