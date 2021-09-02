@@ -165,7 +165,7 @@ function Messanger() {
         const receiverId = currentchat.members.find(
             (member) => member !== user._id
         )
-    console.log(formData,'data to pass');
+    console.log(formData,image,'data to pass');
 
         try {
             var res = await axios.post(`${process.env.REACT_APP_BACK_END_URL}/message`, formData,
