@@ -32,38 +32,38 @@ function Messanger() {
     const [chatList, setChatList] = useState(false)
     const [image, setImage] = useState({})
     const [previewLink, setPreviewLink] = useState(null)
-    const [chatChange, setChatchange] =  useState(false)
-    const [previousChats, setPreviousChats]=  useState(false)
-    const [previousConverstation,setPreviousConversation] = useState([])
-    const [allChats, setAllChats]=  useState(true)
-    const [activeChats, setActiveChats]=  useState(false)
+    const [chatChange, setChatchange] = useState(false)
+    const [previousChats, setPreviousChats] = useState(false)
+    const [previousConverstation, setPreviousConversation] = useState([])
+    const [allChats, setAllChats] = useState(true)
+    const [activeChats, setActiveChats] = useState(false)
 
 
 
     useEffect(() => {
         socket.current = io(process.env.REACT_APP_WEB_SOCKET)
         socket.current.on("getMessage", (data) => {
-            const {messageImage,senderId,text} = data
-            console.log(data,'messageasche frm server');
+            const { messageImage, senderId, text } = data
+            console.log(data, 'messageasche from server');
             if (!messageImage && !text) {
                 console.log('invalid message');
             } else {
-                
-            if (messageImage) {
-                setarraivalmessage({
-                    sender:senderId,
-                    text: text,
-                    messageImage: messageImage,
-                    createdAt: Date.now()
-                })
-            }
-            else {
-                setarraivalmessage({
-                    sender: senderId,
-                    text: text,
-                    createdAt: Date.now()
-                })
-            }
+
+                if (messageImage) {
+                    setarraivalmessage({
+                        sender: senderId,
+                        text: text,
+                        messageImage: messageImage,
+                        createdAt: Date.now()
+                    })
+                }
+                else {
+                    setarraivalmessage({
+                        sender: senderId,
+                        text: text,
+                        createdAt: Date.now()
+                    })
+                }
             }
 
 
@@ -82,7 +82,7 @@ function Messanger() {
             setOnlineUsers(user.friends.filter((f) => users.some((u) => u.userId === f._id)))
         })
     }, [user])
-    const conversationChange =() =>{
+    const conversationChange = () => {
         setChatchange(!chatChange)
     }
 
@@ -103,7 +103,7 @@ function Messanger() {
 
     useEffect(() => {
         getConversations()
-    }, [user._id,chatChange]);
+    }, [user._id, chatChange]);
 
     const getAlluser = async () => {
         try {
@@ -122,7 +122,7 @@ function Messanger() {
 
     useEffect(() => {
         getAlluser()
-    }, [user._id,chatChange]); 
+    }, [user._id, chatChange]);
 
 
     useEffect(() => {
@@ -175,7 +175,8 @@ function Messanger() {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                     }
                 });
-            if(res.status === 201){
+            console.log(res);
+            if (res.status === 201) {
                 setMessages([...messages, res.data])
             }
             setNewMessage("")
@@ -184,7 +185,7 @@ function Messanger() {
         } catch (err) {
             console.log(err);
         }
-        if (res.status===204) {
+        if (res.status === 204) {
             console.log('invalid message');
         } else {
             if (res.data.messageImage) {
@@ -246,7 +247,7 @@ function Messanger() {
         }
     }
 
-    
+
 
     const toggleView = e => {
         e.preventDefault()
@@ -294,13 +295,13 @@ function Messanger() {
         setPreviewLink(null)
         setImage(null)
     }
-    const myAllChats = e =>{
+    const myAllChats = e => {
         e.preventDefault()
         setAllChats(true)
         setPreviousChats(false)
         setActiveChats(false)
     }
-    const mychats =async(e)=>{
+    const mychats = async (e) => {
         e.preventDefault()
         setAllChats(false)
         try {
@@ -319,7 +320,7 @@ function Messanger() {
             console.log(err)
         }
     }
-    const activeUsers = e =>{
+    const activeUsers = e => {
         e.preventDefault()
         setPreviousChats(false)
         setAllChats(false)
@@ -334,48 +335,48 @@ function Messanger() {
                     <div className="chatmenuwrapper">
                         {
                             allChats ?
-                            conversations.map((one, index) => (
-                            <div onClick={() => PushToChatBar(one)} ref={clickRef}>
-                                <Conversation
-                                    key={index}
-                                    one={one}
-                                    user={user}
-                                    onlineusers={onlineusers}
-                                />
-                            </div>
-                            ))
-                            :
-                            previousChats ?
-                            previousConverstation.map((one, index) => (
-                            <div onClick={() => PushToChatBar(one)} ref={clickRef}>
-                                <Conversation
-                                    key={index}
-                                    one={one}
-                                    user={user}
-                                    onlineusers={onlineusers}
-                                />
-                            </div>
-                            ))
-                            : activeChats ?
-                                <OnlineUser
-                                    onlineusers={onlineusers}
-                                    user={user}
-                                    PushToChatBar={PushToChatBar}
-                                    ref={clickRef}
-                                />
-                            : null
+                                conversations.map((one, index) => (
+                                    <div onClick={() => PushToChatBar(one)} ref={clickRef}>
+                                        <Conversation
+                                            key={index}
+                                            one={one}
+                                            user={user}
+                                            onlineusers={onlineusers}
+                                        />
+                                    </div>
+                                ))
+                                :
+                                previousChats ?
+                                    previousConverstation.map((one, index) => (
+                                        <div onClick={() => PushToChatBar(one)} ref={clickRef}>
+                                            <Conversation
+                                                key={index}
+                                                one={one}
+                                                user={user}
+                                                onlineusers={onlineusers}
+                                            />
+                                        </div>
+                                    ))
+                                    : activeChats ?
+                                        <OnlineUser
+                                            onlineusers={onlineusers}
+                                            user={user}
+                                            PushToChatBar={PushToChatBar}
+                                            ref={clickRef}
+                                        />
+                                        : null
                         }
-                        
+
                     </div>
                     <div className="extra">
                         <div className="extrachild alert"
-                        onClick={myAllChats}
+                            onClick={myAllChats}
                         >All</div>
                         <div className="extrachild previouschat"
                             onClick={mychats}
                         >Chats</div>
                         <div className="extrachild active"
-                        onClick={activeUsers}
+                            onClick={activeUsers}
                         >Active</div>
                     </div>
                 </div>
