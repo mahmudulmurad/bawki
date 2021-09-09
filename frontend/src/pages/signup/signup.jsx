@@ -34,9 +34,9 @@ export default function Signup() {
         <div className="signup">
             <div className="signupWrapper">
                 <div className="signupLeft">
-                    <h4 className="signupLogo">TMM Emissary</h4>
+                    <h4 className="signupLogo">h3llo</h4>
                     <span className="signupDesc">
-                    Find out your better half for the better future.
+                    Find your ChatMate.
                     </span>
                 </div>
                 <div className="signupRight">

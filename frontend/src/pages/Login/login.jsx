@@ -18,9 +18,9 @@ export default function Login() {
     <div className="login">
       <div className="loginWrapper">
         <div className="loginLeft">
-          <h4 className="loginLogo">TMM Emissary</h4>
+          <h4 className="loginLogo">h3llo</h4>
           <span className="loginDesc">
-            Find your better half for the better future.
+            Find your ChatMate
           </span>
         </div>
         <div className="loginRight">
