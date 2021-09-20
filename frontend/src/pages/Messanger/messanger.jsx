@@ -380,7 +380,7 @@ function Messanger() {
                 </div>
                 <div className="chatbox">
                     <div className="chatboxwrapper">
-                        { currentchat ?
+                        {/* { currentchat ?
                             (<>
                                 <div className="chatboxtop">
                                     {messages.map((one, index) => (
@@ -394,7 +394,6 @@ function Messanger() {
                                         <img
                                             className="imagePreview"
                                             src={previewLink}
-                                            alt="..."
                                         />
                                     <span className="crossButton">
                                         <CloseIcon style={{ fontSize: 17 }}
@@ -429,7 +428,7 @@ function Messanger() {
                             </>)
                             :
                             (<span className="noconversation">open a conversation</span>)
-                        }
+                        } */}
                     </div>
                 </div>
                 <div className="alluser">
@@ -447,6 +446,121 @@ function Messanger() {
                         ))}
                     </div>
                 </div>
+            </div>
+            <div className="chatbar">
+                <div className="singleChat">
+                    {chatbar ?
+                        chatbar.map((one, index) => {
+                            /* <div onClick={() =>chatSetter(one)} > */
+                            return index < 3 ?
+                                <div>
+                                    <ChatBox
+                                        index={index}
+                                        one={one}
+                                        user={user}
+                                        // onlineusers={onlineusers}
+                                        currentchat={currentchat}
+                                        handleRemoveItem={handleRemoveItem}
+                                        chatSetter={chatSetter}
+                                    />
+                                </div>
+                                :
+                                null
+                        })
+                        : null
+                    }
+                    {
+                        popup ?
+                            <>
+                                <div className='box'>
+
+                                    <div className="boxheader" onClick={toggleView}>
+                                        {friend?.username}
+                                    </div>
+
+                                    <div className="boxbody">
+                                        <div>
+                                            {messages.map((one, index) => (
+                                                <div ref={scrollRef}>
+                                                    <Message one={one} key={index} own={one.sender === user._id} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {
+                                        previewLink ?
+                                            <div className="preview">
+                                                <img
+                                                    className="imagePreview"
+                                                    src={previewLink}
+                                                    alt="noimg"
+                                                />
+                                                <span className="crossButton">
+                                                    <CloseIcon style={{ fontSize: 17 }}
+                                                        onClick={removePreview}
+                                                    />
+                                                </span>
+                                            </div>
+                                            : null
+                                    }
+                                    <div className="boxfooter">
+                                        <textarea
+                                            className="textinputs"
+                                            placeholder="write something..."
+                                            onChange={(e) => setNewMessage(e.target.value)}
+                                            value={newMessage}
+                                        ></textarea>
+
+                                        <label htmlFor="upload-button">
+                                            <span className="fileIcon">
+                                                <AttachFileIcon />
+                                            </span>
+                                        </label>
+
+                                        <input type="file"
+                                            name="messageImage"
+                                            id="upload-button"
+                                            onChange={(e) => imageSetter(e)}
+                                            style={{ display: "none" }}
+                                        />
+
+                                        <button className="textsubmint" onClick={sendMessage}>Send</button>
+
+                                    </div>
+                                </div>
+                            </> : null}
+                </div>
+
+                <div
+                    className={`${chatNumber > 0 ? "chatNumber" : "hidden"}`}
+                    onClick={showhiddenChatmembers}
+                >
+                    {chatNumber}
+                </div>
+                {
+                    chatList ?
+                        <div className="chatListContainer">
+                            {chatbar.map((one, index) => {
+                                return index > 2 ?
+                                    <ChatBox
+                                        index={index}
+                                        one={one}
+                                        user={user}
+                                        // onlineusers={onlineusers}
+                                        currentchat={currentchat}
+                                        handleRemoveItem={handleRemoveItem}
+                                        chatSetter={chatSetter}
+                                    />
+                                    : null
+                            })}
+                        </div>
+                        : null
+                }
+                {/* <div className="extra">
+                    <div className="extrachild alert">Alerts</div>
+                    <div className="extrachild previouschat">Chats</div>
+                    <div className="extrachild active">Active</div>
+                </div> */}
             </div>
 
         </>
